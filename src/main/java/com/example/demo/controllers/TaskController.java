@@ -22,63 +22,41 @@ public class TaskController {
     @Autowired
     private ModuleService moduleService;
 
-
-    // Display all tasks
     @GetMapping
     public String getAllTasks(Model model) {
         List<Task> tasks = taskService.getAllTasks();
         model.addAttribute("tasks", tasks);
-        return "tasks/list"; // Points to `src/main/resources/templates/tasks/list.html`
+        return "tasks/list";
     }
 
     // Display a form to add a new task
-    @GetMapping("/tasks/new")
+    @GetMapping("/new")
     public String showAddTaskForm(Model model) {
-        // Create an empty Task object to bind the form fields
         model.addAttribute("task", new Task());
-
-        // Add all users and modules to the model
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("modules", moduleService.getAllModules());
-
-        return "tasks/new"; // Points to 'tasks/new.html'
+        return "tasks/new";
     }
 
-    @PostMapping("/tasks")
+    // Save a new task
+    @PostMapping
     public String addTask(@ModelAttribute Task task) {
-        taskService.addTask(task); // Save the task
-        return "redirect:/tasks"; // Redirect to the task list after saving
+        taskService.addTask(task);
+        return "redirect:/tasks";
     }
 
-
-    // Display details of a specific task by ID
+    // Display details of a specific task
     @GetMapping("/{id}")
     public String getTaskById(@PathVariable Long id, Model model) {
         Task task = taskService.getTaskById(id);
         model.addAttribute("task", task);
-        return "tasks/detail"; // Points to `src/main/resources/templates/tasks/detail.html`
+        return "tasks/detail";
     }
 
-    // Delete a task by ID
+    // Delete a task
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return "redirect:/tasks"; // Redirect to the list of tasks
-    }
-
-    // Display tasks associated with a specific user ID
-    @GetMapping("/user/{userId}")
-    public String getTasksByUserId(@PathVariable Long userId, Model model) {
-        List<Task> tasks = taskService.getTasksByUserId(userId);
-        model.addAttribute("tasks", tasks);
-        return "tasks/user-tasks"; // Points to `src/main/resources/templates/tasks/user-tasks.html`
-    }
-
-    // Display tasks associated with a specific module ID
-    @GetMapping("/module/{moduleId}")
-    public String getTasksByModuleId(@PathVariable Long moduleId, Model model) {
-        List<Task> tasks = taskService.getTasksByModuleId(moduleId);
-        model.addAttribute("tasks", tasks);
-        return "tasks/module-tasks"; // Points to `src/main/resources/templates/tasks/module-tasks.html`
+        return "redirect:/tasks";
     }
 }
