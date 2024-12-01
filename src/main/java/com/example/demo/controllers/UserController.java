@@ -1,11 +1,14 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.User;
+import com.example.demo.services.ModuleService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.entities.Module;
+
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ModuleService moduleService;
 
     // Display all users
     @GetMapping
@@ -38,13 +43,6 @@ public class UserController {
         return "redirect:/users"; // Redirect to the list of users
     }
 
-    // Display details of a specific user by ID
-    @GetMapping("/{id}")
-    public String getUserById(@PathVariable Long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "users/detail"; // Points to `src/main/resources/templates/users/detail.html`
-    }
 
     // Delete a user by ID
     @GetMapping("/delete/{id}")
@@ -59,5 +57,30 @@ public class UserController {
         User user = userService.getUserByUsername(username);
         model.addAttribute("user", user);
         return "users/search-result"; // Points to `src/main/resources/templates/users/search-result.html`
+    }
+
+    @GetMapping("/{id}/profile")
+    public String getUserProfile(@PathVariable Long id, Model model) {
+        // Fetch user by ID
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return "redirect:/users"; // Handle the case where user is not found
+        }
+
+        // Fetch modules and tasks associated with the user
+        List<Module> modules = moduleService.getModulesByUserId(id);
+
+        // Pass data to the model
+        model.addAttribute("user", user);
+        model.addAttribute("modules", modules);
+
+        return "users/profile"; // Points to the updated profile HTML
+    }
+
+    @GetMapping("/{id}")
+    public String showUserProfile(@PathVariable Long id, Model model) {
+        User user = userService.getUserById(id); // Fetch the user by ID
+        model.addAttribute("user", user);
+        return "users/profile"; // Name of the Thymeleaf view for user profile
     }
 }

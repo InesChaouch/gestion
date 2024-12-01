@@ -29,7 +29,7 @@
                     <td th:text="${task.description}"></td>
                     <td>
                         <form action="/tasks/{task.id}/updateStatus" method="post" th:action="@{/tasks/{id}/updateStatus(id=${task.id})}">
-                            <label for="status">Status:</label>
+                            <label for="status"></label>
                             <select id="status" name="status">
                                 <option value="TODO" th:selected="${task.status.name() == 'TODO'}">To Do</option>
                                 <option value="IN_PROGRESS" th:selected="${task.status.name() == 'IN_PROGRESS'}">In Progress</option>
@@ -38,8 +38,13 @@
                             </select>
                             <button type="submit">Update Status</button>
                         </form>
-                    <td th:text="${task.user.username}"></td>
-                    <td th:text="${task.module.name}"></td>
+                    </td>
+                    <!-- Make the username clickable -->
+                    <!-- Link to the user profile using user id -->
+                    <td><a th:href="@{/users/{id}(id=${task.user.id})}" th:text="${task.user.username}"></a></td>
+
+                    <!-- Link to the module details using module id -->
+                    <td><a th:href="@{/modules/{id}(id=${task.module.id})}" th:text="${task.module.name}"></a></td>
                     <td>
                         <a th:href="@{/tasks/{id}(id=${task.id})}" class="btn btn-info btn-sm">View</a>
                         <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm">Delete</a>

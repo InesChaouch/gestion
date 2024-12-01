@@ -4,7 +4,7 @@ import com.example.demo.dao.UserRepository;
 import com.example.demo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.demo.entities.Module;
 import java.util.List;
 
 @Service
@@ -37,4 +37,11 @@ public class UserService implements IServiceUser {
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);  // Retrieve user by username
     }
+
+    public List<Module> getModulesByUserId(Long userId) {
+        // Assuming `User` entity has a mapped list of `modules`
+        User user = userRepository.findById(userId).orElse(null);
+        return user != null ? user.getModules() : List.of();
+    }
+
 }
