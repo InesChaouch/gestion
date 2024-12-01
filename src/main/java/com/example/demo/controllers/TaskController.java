@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Task;
+import com.example.demo.entities.TaskStatus; // Add import for TaskStatus enum
 import com.example.demo.services.ModuleService;
 import com.example.demo.services.TaskService;
 import com.example.demo.services.UserService;
@@ -26,6 +27,7 @@ public class TaskController {
     public String getAllTasks(Model model) {
         List<Task> tasks = taskService.getAllTasks();
         model.addAttribute("tasks", tasks);
+        model.addAttribute("statuses", TaskStatus.values());  // Add available statuses
         return "tasks/list";
     }
 
@@ -45,12 +47,14 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
-    // Display details of a specific task
-    @GetMapping("/{id}")
-    public String getTaskById(@PathVariable Long id, Model model) {
-        Task task = taskService.getTaskById(id);
-        model.addAttribute("task", task);
-        return "tasks/detail";
+    @PostMapping("/{id}/updateStatus")
+    public String updateTaskStatus(@PathVariable Long id, @RequestParam TaskStatus status, Model model) {
+        Task task = taskService.getTaskById(id);  // Retrieve the task by ID
+        if (task != null) {
+            task.setStatus(status);  // Update the task's status
+            taskService.updateTask(task);  // Save the updated task
+        }
+        return "redirect:/tasks";  // Redirect to the tasks list page
     }
 
     // Delete a task

@@ -50,4 +50,10 @@ public class TaskService implements IServiceTask {
         // Assuming you have a method in the repository to find tasks by moduleId
         return taskRepository.findByModuleId(moduleId);
     }
+
+
+    public void updateTask(Task task) {
+        // Save the updated task back to the database
+        taskRepository.save(task);
+    }
 }

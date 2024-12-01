@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,8 @@ public class Task {
 
     private String description;
 
-    private String status;
+    @Enumerated(EnumType.STRING)  // Store the enum as a string in the database
+    private TaskStatus status = TaskStatus.TODO;
 
     // OneToMany with User (A User can have many Tasks)
     @ManyToOne

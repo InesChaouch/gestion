@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tasks by Module</title>
+    <title>Module Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
     <div class="card shadow">
-        <div class="card-header bg-warning text-white">
-            <h2 class="text-center">Tasks by Module</h2>
+        <div class="card-header bg-primary text-white">
+            <h2 class="text-center">Module Details</h2>
         </div>
         <div class="card-body">
+            <h4>Name: <span th:text="${module.name}"></span></h4>
+            <h5>Description: <span th:text="${module.description}"></span></h5>
+
+            <h5 class="mt-4">Assigned Tasks:</h5>
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                 <tr>
-                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
                     <th>Assigned User</th>
-                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="task : ${tasks}">
-                    <td th:text="${task.name}"></td>
-                    <td th:text="${task.user.username}"></td>
-                    <td>
-                        <a th:href="@{/tasks/{id}(id=${task.id})}" class="btn btn-primary btn-sm">View Details</a>
-                    </td>
+                    <td th:text="${task.description}"></td>
+                    <td th:text="${task.status}"></td>
+                    <td th:text="${task.user.username}"></td> <!-- Assigned User -->
                 </tr>
                 </tbody>
             </table>
-        </div>
-        <div class="card-footer text-center">
-            <a href="/modules" class="btn btn-secondary">Back to Modules</a>
+
+            <div class="text-end">
+                <a href="/modules" class="btn btn-secondary">Back to Modules</a>
+            </div>
         </div>
     </div>
 </div>
