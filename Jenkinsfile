@@ -11,12 +11,12 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', 
-                    url: 'https://github.com/InesChaouch/gestion.git' 
+                    url: 'https://github.com/InesChaouch/gestion.git'
             }
         }
         stage('Build Server Image') {
             steps {
-                dir('server') { /
+                dir('server') {
                     script {
                         dockerImageServer = docker.build("${IMAGE_NAME_SERVER}")
                     }
