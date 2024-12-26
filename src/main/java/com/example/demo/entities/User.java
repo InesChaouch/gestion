@@ -26,12 +26,10 @@ public class User {
 
     private String email;
 
-    // OneToMany with Task (A User can be responsible for many Tasks)
     @OneToMany(mappedBy = "user")
     @JsonBackReference
     private List<Task> tasks;
 
-    // ManyToMany with Module (A User can be involved in many Modules)
     @ManyToMany
     @JoinTable(
             name = "user_modules",

@@ -31,7 +31,6 @@ public class TaskController {
         return "tasks/list";
     }
 
-    // Display a form to add a new task
     @GetMapping("/new")
     public String showAddTaskForm(Model model) {
         model.addAttribute("task", new Task());
@@ -40,7 +39,6 @@ public class TaskController {
         return "tasks/new";
     }
 
-    // Save a new task
     @PostMapping
     public String addTask(@ModelAttribute Task task) {
         taskService.addTask(task);
@@ -49,18 +47,25 @@ public class TaskController {
 
     @PostMapping("/{id}/updateStatus")
     public String updateTaskStatus(@PathVariable Long id, @RequestParam TaskStatus status, Model model) {
-        Task task = taskService.getTaskById(id);  // Retrieve the task by ID
+        Task task = taskService.getTaskById(id);
         if (task != null) {
-            task.setStatus(status);  // Update the task's status
-            taskService.updateTask(task);  // Save the updated task
+            task.setStatus(status);
+            taskService.updateTask(task);
         }
-        return "redirect:/tasks";  // Redirect to the tasks list page
+        return "redirect:/tasks";
     }
 
-    // Delete a task
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return "redirect:/tasks";
     }
+
+    @GetMapping("/{id}")
+    public String getTaskDetails(@PathVariable("id") Long id, Model model) {
+        Task task = taskService.getTaskById(id);
+        model.addAttribute("task", task);
+        return "tasks/detail";
+    }
+
 }

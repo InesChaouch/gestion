@@ -26,14 +26,13 @@ public class ModuleController {
     public String getAllModules(Model model) {
         List<Module> modules = moduleService.getAllModules();
         model.addAttribute("modules", modules);
-        return "modules/list"; // Points to `src/main/resources/templates/modules/list.html`
+        return "modules/list";
     }
 
-    // Display a form to add a new module
     @GetMapping("/new")
     public String showAddModuleForm(Model model) {
         model.addAttribute("module", new Module());
-        return "modules/new"; // Points to `src/main/resources/templates/modules/new.html`
+        return "modules/new";
     }
 
     @PostMapping("/new")
@@ -51,32 +50,29 @@ public class ModuleController {
     @GetMapping("/delete/{id}")
     public String deleteModule(@PathVariable Long id) {
         moduleService.deleteModule(id);
-        return "redirect:/modules/list"; // Redirect to the list of modules
+        return "redirect:/modules/list";
     }
 
     @GetMapping("/Details/{id}")
     public String showModuleDetails(@PathVariable Long id, Model model) {
-        Module module = moduleService.getModuleById(id); // Fetch the module by ID
+        Module module = moduleService.getModuleById(id);
         model.addAttribute("module", module);
-        return "modules/module"; // Name of the Thymeleaf view for module details
+        return "modules/module";
     }
 
     @GetMapping("/{id}")
     public String getModuleById(@PathVariable Long id, Model model) {
-        // Fetch module by ID
         Module module = moduleService.getModuleById(id);
         if (module == null) {
-            return "redirect:/modules"; // Handle the case where module is not found
+            return "redirect:/modules";
         }
 
-        // Fetch tasks associated with the module
         List<Task> tasks = taskService.getTasksByModuleId(id);
 
-        // Pass data to the model
         model.addAttribute("module", module);
         model.addAttribute("tasks", tasks);
 
-        return "modules/detail"; // Points to the module detail view
+        return "modules/detail";
     }
 
 }

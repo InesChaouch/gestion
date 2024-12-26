@@ -26,12 +26,10 @@ public class Module {
 
     private String description;
 
-    // OneToMany with Task (A Module can have many Tasks)
     @OneToMany(mappedBy = "module")
     @JsonBackReference
     private List<Task> tasks;
 
-    // ManyToMany with User (A Module can have many Users)
     @ManyToMany(mappedBy = "modules")
     @JsonBackReference
     private List<User> users;

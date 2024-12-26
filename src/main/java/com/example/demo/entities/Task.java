@@ -25,13 +25,11 @@ public class Task {
     @Enumerated(EnumType.STRING)  // Store the enum as a string in the database
     private TaskStatus status = TaskStatus.TODO;
 
-    // OneToMany with User (A User can have many Tasks)
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonManagedReference
     private User user;
 
-    // ManyToOne with Project (A Task belongs to one Project)
     @ManyToOne
     @JoinColumn(name = "module_id")
     @JsonManagedReference
