@@ -5,21 +5,19 @@ pipeline {
     }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
-        IMAGE_NAME_SERVER = 'Ines_CHAOUCH/gestion-server'  
+        IMAGE_NAME_SERVER = 'ines_chaouch/gestion-server'  
     }
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main', 
-                    url: https://github.com/InesChaouch/gestion.git' 
+                    url: 'https://github.com/InesChaouch/gestion.git' 
             }
         }
         stage('Build Server Image') {
             steps {
-                dir('server') { /
-                    script {
-                        dockerImageServer = docker.build("${IMAGE_NAME_SERVER}")
-                    }
+                script {
+                    dockerImageServer = docker.build("${IMAGE_NAME_SERVER}")
                 }
             }
         }
@@ -28,8 +26,7 @@ pipeline {
                 script {
                     sh """
                     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-                    aquasec/trivy:latest image --exit-code 0 \
-                    --severity LOW,MEDIUM,HIGH,CRITICAL \
+                    aquasec/trivy:latest image --timeout 10m --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL \
                     ${IMAGE_NAME_SERVER}
                     """
                 }
