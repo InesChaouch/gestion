@@ -5,7 +5,7 @@ pipeline {
     }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
-        IMAGE_NAME_SERVER = 'Ines_CHAOUCH/gestion-server'  
+        IMAGE_NAME_SERVER = 'ines_chaouch/gestion-server'  
     }
     stages {
         stage('Checkout') {
